@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TY Like store - Safe & Secure FF Likes</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/jdk4JrrZ/1787458989674.png">
+    <!-- Tailwind CSS & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; }
+        .payment-selected { border-color: #f97316 !important; background-color: #fff7ed !important; }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen pb-24 select-none relative overflow-x-hidden">
+
+    <!-- ১. টপ হেডার বার -->
+    <header class="bg-white border-b border-slate-100 px-4 py-3 sticky top-0 z-40 flex justify-between items-center shadow-sm">
+        <div class="flex items-center gap-2.5">
+            <img src="https://i.postimg.cc/jdk4JrrZ/1787458989674.png" alt="TY Like store Logo" class="w-10 h-10 rounded-2xl object-cover shadow-md shadow-orange-500/20 border border-slate-100">
+            <div>
+                <h1 class="text-base font-black tracking-tight text-slate-900 leading-tight">TY Like store</h1>
+                <p class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+                    <i class="fa-solid fa-shield-halved text-[10px]"></i> Trusted & Secure
+                </p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <!-- ওয়ালেট ব্যালেন্স -->
+            <button onclick="openAddMoneyModal()" class="bg-orange-500 text-white text-xs font-black px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm active:scale-95 transition">
+                <i class="fa-solid fa-wallet text-[11px]"></i> ৳<span class="walletVal">0</span>
+            </button>
+            
+            <!-- ৩ ডট মেনু বাটন -->
+            <button onclick="toggleSidebarMenu()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-base active:scale-95 transition">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- =================== সাইড ড্রয়ার মেনু =================== -->
+    <div id="sidebarOverlay" onclick="toggleSidebarMenu()" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 transition-opacity"></div>
+    
+    <aside id="sidebarDrawer" class="fixed top-0 right-0 h-full w-[310px] max-w-[85vw] bg-white z-50 shadow-2xl p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="space-y-4">
+            
+            <div class="flex justify-between items-center pb-1">
+                <div class="flex items-center gap-2.5">
+                    <img src="https://i.postimg.cc/jdk4JrrZ/1787458989674.png" alt="TY Like store Logo" class="w-8 h-8 rounded-xl object-cover shadow-sm border border-slate-100">
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900 leading-tight">TY Like store</h3>
+                        <p class="text-[10px] text-slate-400 font-bold">Premium Panel</p>
+                    </div>
+                </div>
+                <button onclick="toggleSidebarMenu()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- ইউজার প্রোফাইল কার্ড (কোনো ফেক ছবি থাকবে না) -->
+            <div class="bg-slate-900 text-white rounded-3xl p-4.5 space-y-4 shadow-lg border border-slate-800">
+                <div class="flex items-center gap-3">
+                    <img id="sidebarUserPhoto" src="https://lh3.googleusercontent.com/a/default-user=s96-c" class="w-12 h-12 rounded-full border-2 border-orange-500 object-cover bg-slate-800 shrink-0 shadow-md">
+                    <div class="overflow-hidden">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">WELCOME</span>
+                        <h4 id="sidebarUserName" class="text-base font-black text-white truncate">Guest User</h4>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-end pt-1 border-t border-slate-800/80">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">BALANCE</span>
+                        <div class="text-2xl font-black text-white">৳<span class="walletVal">0</span></div>
+                    </div>
+                    <button onclick="openAddMoneyModal(); toggleSidebarMenu();" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-sm font-bold active:scale-95 transition">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- OVERVIEW মেনু -->
+            <div class="space-y-1 pt-2">
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block px-2 mb-2">OVERVIEW</span>
+
+                <button onclick="backToHome(); toggleSidebarMenu();" class="w-full bg-orange-50/70 text-orange-600 font-bold text-xs p-3 rounded-2xl flex items-center gap-3 transition">
+                    <div class="w-8 h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center text-sm shadow-sm">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+                    <span>Home</span>
+                </button>
+
+                <button onclick="scrollToOrders(); toggleSidebarMenu();" class="w-full hover:bg-slate-50 text-slate-700 font-bold text-xs p-3 rounded-2xl flex items-center gap-3 transition">
+                    <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                    <span>My Orders</span>
+                </button>
+
+                <button onclick="openAddMoneyModal(); toggleSidebarMenu();" class="w-full hover:bg-slate-50 text-slate-700 font-bold text-xs p-3 rounded-2xl flex items-center gap-3 transition">
+                    <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <span>Add Money</span>
+                </button>
+
+                <button onclick="alert('১. প্যাকেজ সিলেক্ট করুন\n২. UID দিন\n৩. বিকাশ 01991561668 নম্বরে টাকা পাঠান\n৪. TrxID দিয়ে সাবমিট করলেই লাইক চলে যাবে।');" class="w-full hover:bg-slate-50 text-slate-700 font-bold text-xs p-3 rounded-2xl flex items-center gap-3 transition">
+                    <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <span>How it works</span>
+                </button>
+            </div>
+
+            <!-- টেলিগ্রাম চ্যানেল কার্ড -->
+            <div class="bg-amber-50/60 border border-amber-200/60 p-3 rounded-2xl flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center text-sm">
+                        <i class="fa-brands fa-telegram"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-xs font-black text-slate-900">Official Channel</h5>
+                        <p class="text-[9px] text-slate-500">Join for updates & support</p>
+                    </div>
+                </div>
+                <a href="https://t.me/ty_shakib_1" target="_blank" class="text-xs font-bold text-orange-600 hover:text-orange-700 flex items-center gap-1">
+                    Join <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- লগ আউট বাটন -->
+        <div class="pt-4 border-t border-slate-100">
+            <button onclick="handleAuthAction()" id="sidebarAuthBtn" class="w-full bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs p-3 rounded-2xl flex items-center gap-3 transition">
+                <div class="w-8 h-8 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </div>
+                <span id="sidebarAuthText">Log Out</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- =================== ভিউ ১: হোম পেজ =================== -->
+    <div id="viewHome" class="max-w-md mx-auto p-4 space-y-4">
+
+        <div class="bg-orange-50 border border-orange-200/80 rounded-2xl p-2.5 flex items-center gap-2 text-xs text-orange-950 shadow-sm">
+            <div class="w-7 h-7 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-bullhorn text-xs"></i>
+            </div>
+            <div class="truncate font-medium text-[11px] leading-tight">
+                🔒 Safe & Secure. 💳 বিকাশ Send Money: <span class="font-bold text-orange-600">01991561668</span>
+            </div>
+        </div>
+
+        <!-- ব্যানার -->
+        <div class="rounded-2xl overflow-hidden shadow-lg border border-slate-200/80 bg-white">
+            <img id="mainBannerImg" 
+                 src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1000&q=80" 
+                 alt="TY Like store Banner" 
+                 class="w-full h-44 object-cover">
+        </div>
+
+        <!-- সোশ্যাল বাটন -->
+        <div class="grid grid-cols-2 gap-3">
+            <a href="https://t.me/ty_shakib_1" target="_blank" class="bg-gradient-to-br from-orange-500 to-orange-600 hover:from-orange-600 text-white p-3 rounded-2xl flex items-center justify-center gap-2.5 shadow-md shadow-orange-500/20 active:scale-95 transition text-center">
+                <i class="fa-brands fa-telegram text-2xl"></i>
+                <div class="text-left">
+                    <span class="text-[9px] font-bold uppercase block text-orange-200 leading-none">OFFICIAL</span>
+                    <span class="text-xs font-black tracking-tight leading-none text-white">CHANNEL</span>
+                </div>
+            </a>
+
+            <a href="https://wa.me/8801933470377?text=হ্যালো,%20TY%20Like%20Store%20থেকে%20সাহায্য%20চাই।" target="_blank" class="bg-gradient-to-br from-orange-500 to-orange-600 hover:from-orange-600 text-white p-3 rounded-2xl flex items-center justify-center gap-2.5 shadow-md shadow-orange-500/20 active:scale-95 transition text-center">
+                <i class="fa-brands fa-whatsapp text-2xl"></i>
+                <div class="text-left">
+                    <span class="text-[9px] font-bold uppercase block text-orange-200 leading-none">SUPPORT</span>
+                    <span class="text-xs font-black tracking-tight leading-none text-white">WHATSAPP</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+            <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5">
+                <span class="text-orange-500">⚡</span> Instant & Auto Like Packages
+            </h2>
+            <button onclick="alert('নিয়মাবলী:\n১. প্রতিদিন ১২০ লাইক করে আইডি সুরক্ষিত রেখে পাঠানো হয়।\n২. বিকাশ পার্সোনাল 01991561668 নম্বরে Send Money করবেন।\n৩. টাকা পাঠানোর পর সঠিক TrxID সাবমিট করলেই লাইক চলে যাবে।')" class="bg-orange-100 hover:bg-orange-200 text-orange-700 text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                <i class="fa-solid fa-circle-info"></i> Rules
+            </button>
+        </div>
+
+        <div class="space-y-3.5" id="packagesList"></div>
+
+        <div id="ordersSection" class="pt-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">আপনার অর্ডার তালিকা:</h3>
+            <div id="userOrdersList" class="space-y-2"></div>
+        </div>
+
+    </div>
+
+    <!-- =================== ভিউ ২: চেকআউট পেজ =================== -->
+    <div id="viewCheckout" class="hidden max-w-md mx-auto p-4 space-y-4">
+        
+        <button onclick="backToHome()" class="text-xs font-bold text-slate-600 hover:text-orange-500 flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-arrow-left"></i> প্যাকেজ তালিকায় ফিরে যান
+        </button>
+
+        <div class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-md flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white text-xl font-black shadow-md shadow-orange-500/20">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold uppercase text-orange-600 tracking-wider block">SELECTED PACKAGE</span>
+                    <h3 id="chkPkgName" class="text-base font-black text-slate-900 tracking-tight">120 LIKES</h3>
+                    <p id="chkPkgDelivery" class="text-xs text-slate-400 font-semibold">Instant Delivery</p>
+                </div>
+            </div>
+            <div class="text-2xl font-black text-orange-500">
+                ৳<span id="chkPkgPrice">10</span>
+            </div>
+        </div>
+
+        <!-- Free Fire UID সেকশন -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-md space-y-3">
+            <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-black">1</span>
+                <h4 class="text-sm font-black text-slate-800">Free Fire UID</h4>
+            </div>
+
+            <input type="number" id="checkoutUid" placeholder="আপনার Free Fire UID লিখুন (যেমন: 3000845074)" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm text-slate-800 focus:outline-none focus:border-orange-500 font-bold tracking-wider">
+            <p class="text-[11px] text-slate-400 font-medium leading-relaxed">🔒 কোনো পাসওয়ার্ড লাগবে না। শুধু আপনার সঠিক UID দিলেই লাইক চলে যাবে।</p>
+        </div>
+
+        <!-- Select Payment Method সেকশন -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-md space-y-3">
+            <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-black">2</span>
+                <h4 class="text-sm font-black text-slate-800">Select Payment Method</h4>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div onclick="selectPaymentMethod('direct')" id="payOptDirect" class="payment-selected border-2 border-orange-500 bg-orange-50/20 p-3.5 rounded-2xl cursor-pointer flex flex-col items-center justify-center text-center gap-1.5 transition">
+                    <div class="flex items-center gap-1">
+                        <span class="text-pink-600 font-bold text-[10px]">bKash</span>
+                        <span class="text-orange-600 font-bold text-[10px]">Nagad</span>
+                        <span class="text-purple-600 font-bold text-[10px]">Rocket</span>
+                    </div>
+                    <span class="text-[9px] text-slate-400 font-bold">Auto Payment</span>
+                    <span class="text-xs font-black text-slate-800">Payment Now</span>
+                </div>
+
+                <div onclick="selectPaymentMethod('wallet')" id="payOptWallet" class="border-2 border-slate-100 bg-white p-3.5 rounded-2xl cursor-pointer flex flex-col items-center justify-center text-center gap-1.5 transition">
+                    <i class="fa-solid fa-wallet text-orange-500 text-lg"></i>
+                    <span class="text-xs font-black text-slate-800">Wallet (৳<span class="walletVal">0</span>)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2">
+            <button onclick="openAddMoneyModal()" class="w-full bg-white border border-slate-200 text-slate-700 font-bold py-3.5 rounded-2xl text-xs active:scale-95 shadow-sm transition">
+                Add Money
+            </button>
+            <button onclick="handleCheckoutBuy()" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black py-3.5 rounded-2xl text-xs shadow-lg shadow-orange-500/25 active:scale-95 transition">
+                Buy Now
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ফ্লোটিং হেল্পলাইন বাটন -->
+    <a href="https://wa.me/8801933470377?text=হ্যালো,%20TY%20Like%20Store%20থেকে%20সাহায্য%20চাই।" target="_blank" class="fixed bottom-5 right-4 w-14 h-14 rounded-full bg-gradient-to-tr from-orange-600 to-amber-500 text-white flex items-center justify-center shadow-xl shadow-orange-500/30 active:scale-90 z-40 transition">
+        <i class="fa-solid fa-headset text-2xl"></i>
+    </a>
+
+    <!-- =================== মোডাল ১: GOOGLE SIGN-IN =================== -->
+    <div id="googleSignInModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-[32px] p-6 w-full max-w-sm space-y-4 shadow-2xl relative border border-slate-100 text-center">
+            
+            <button onclick="closeGoogleModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center text-sm transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="w-20 h-20 rounded-full p-1 bg-amber-50 border-2 border-orange-200 mx-auto flex items-center justify-center shadow-md">
+                <img src="https://i.postimg.cc/jdk4JrrZ/1787458989674.png" alt="TY Like store Logo" class="w-full h-full rounded-full object-cover">
+            </div>
+
+            <div class="space-y-1">
+                <h3 class="text-xl font-black text-slate-900 tracking-tight leading-tight">Welcome to</h3>
+                <h4 class="text-xl font-black text-orange-500 tracking-tight leading-tight uppercase">TY Like store</h4>
+                <p class="text-xs text-slate-500 pt-0.5 leading-relaxed">
+                    Sign in with Google to order likes in seconds.<br>No password needed.
+                </p>
+            </div>
+
+            <button onclick="triggerRealGoogleAuth()" class="w-full bg-white hover:bg-slate-50 border border-slate-200 active:scale-95 text-slate-700 font-bold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-center gap-2.5 shadow-sm transition">
+                <svg class="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"/>
+                    <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                </svg>
+                <span>Continue with Google</span>
+            </button>
+
+            <div class="flex items-center justify-center gap-2 pt-1 flex-wrap">
+                <span class="bg-slate-50 border border-slate-200 text-slate-600 text-[10px] font-bold px-2.5 py-1 rounded-full">⚡ Instant Delivery</span>
+                <span class="bg-slate-50 border border-slate-200 text-slate-600 text-[10px] font-bold px-2.5 py-1 rounded-full">🛡️ 100% Secure</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================== মোডাল ২: বিকাশ পেমেন্ট মোডাল =================== -->
+    <div id="directPayModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+                <span class="text-xs font-black text-orange-600 uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-paper-plane"></i> বিকাশ Send Money করুন
+                </span>
+                <button onclick="closeDirectModal()" class="text-slate-400 hover:text-slate-600 text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/70 text-xs space-y-1">
+                <div class="flex justify-between">
+                    <span class="text-slate-500">আইডি UID:</span>
+                    <span id="modalUidDisplay" class="font-black text-slate-800"></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">প্যাকেজ:</span>
+                    <span id="modalPkg" class="font-black text-slate-800"></span>
+                </div>
+                <div class="flex justify-between text-orange-600 font-black pt-1 border-t border-slate-200">
+                    <span>পাঠাতে হবে:</span>
+                    <span id="modalPrice"></span>
+                </div>
+            </div>
+
+            <div class="bg-pink-50 border border-pink-200 p-3 rounded-2xl flex justify-between items-center">
+                <div>
+                    <p class="text-[10px] text-pink-600 font-bold">বিকাশ পার্সোনাল Send Money:</p>
+                    <p class="text-base font-black text-pink-700 tracking-wider">01991561668</p>
+                </div>
+                <button onclick="navigator.clipboard.writeText('01991561668'); alert('বিকাশ নম্বর কপি হয়েছে!');" class="bg-pink-600 hover:bg-pink-700 text-white px-2.5 py-1.5 rounded-xl text-xs font-bold active:scale-90 transition">কপি</button>
+            </div>
+
+            <div class="space-y-2 text-xs">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-600 mb-1">আপনার বিকাশ নম্বর:</label>
+                    <input type="number" id="directSender" placeholder="01XXXXXXXXX" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:border-orange-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-600 mb-1">বিকাশ TrxID দিন:</label>
+                    <input type="text" id="directTrx" placeholder="১০ ডিজিটের TrxID" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 uppercase focus:outline-none focus:border-orange-500 font-mono font-bold tracking-wider">
+                </div>
+                <p id="errorMsg" class="text-red-500 text-[11px] hidden font-semibold"></p>
+                <button onclick="submitDirectPayment()" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black py-3 rounded-xl text-xs shadow-lg shadow-orange-500/25 active:scale-95 transition">
+                    অর্ডার ও পেমেন্ট কনফার্ম করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================== আসল FIREBASE GOOGLE AUTH MODULE =================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // আপনার আসল Firebase কনফিগারেশন
+        const firebaseConfig = {
+          apiKey: "AIzaSyAUxZh9oyZEe2azdeIavTB7GflyJ2kmA5w",
+          authDomain: "ty-like-store.firebaseapp.com",
+          projectId: "ty-like-store",
+          storageBucket: "ty-like-store.firebasestorage.app",
+          messagingSenderId: "978383345467",
+          appId: "1:978383345467:web:7d92d3ccc39cbd332c491e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+
+        // আসল গুগল লগইন (কোনো ডামি বা ফেক ছবি থাকবে না)
+        window.triggerRealGoogleAuth = async function() {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                const googleUser = {
+                    name: user.displayName || user.email.split('@')[0],
+                    email: user.email,
+                    photo: user.photoURL || "https://lh3.googleusercontent.com/a/default-user=s96-c" // গুগলের আসল ছবি
+                };
+                localStorage.setItem('ty_google_user', JSON.stringify(googleUser));
+                window.updateAuthUI();
+                window.closeGoogleModal();
+                alert(`স্বাগতম ${googleUser.name}!`);
+            } catch (error) {
+                console.error("Firebase Auth Error:", error);
+                alert("গুগল লগইন এরর: " + error.message);
+            }
+        };
+
+        window.logoutFirebase = async function() {
+            try { await signOut(auth); } catch(e){}
+            // ব্রাউজার মেমোরি থেকে সব ডামি ডাটা চিরতরে ডিলিট করা
+            localStorage.removeItem('ty_google_user');
+            window.updateAuthUI();
+            window.toggleSidebarMenu();
+            alert("লগআউট সফল হয়েছে!");
+        };
+    </script>
+
+    <script>
+        const allPackages = [
+            { likes: '120 LIKES', name: '১২০ লাইক', price: 10, days: '১ দিন', badge: 'POPULAR', badgeColor: 'bg-pink-600', count: '120+' },
+            { likes: '360 LIKES', name: '৩৬০ লাইক', price: 30, days: '৩ দিন', badge: '৩ দিন অটো', badgeColor: 'bg-blue-600', count: '360+' },
+            { likes: '600 LIKES', name: '৬০০ লাইক', price: 55, days: '৫ দিন', badge: '৫ দিন অটো', badgeColor: 'bg-purple-600', count: '600+' },
+            { likes: '700 LIKES', name: '৭০০ লাইক', price: 60, days: '৬ দিন', badge: '৬ দিন অটো', badgeColor: 'bg-amber-600', count: '700+' },
+            { likes: '1,000 LIKES', name: '১,০০০ লাইক', price: 80, days: '৯ দিন', badge: 'মেগা প্যাক', badgeColor: 'bg-emerald-600', count: '1,000+' },
+            { likes: '1,500 LIKES', name: '১,৫০০ লাইক', price: 130, days: '১৩ দিন', badge: 'সুপার প্যাক', badgeColor: 'bg-indigo-600', count: '1,500+' },
+            { likes: '2,000 LIKES', name: '২,০০০ লাইক', price: 160, days: '১৭ দিন', badge: 'ভিআইপি প্যাক', badgeColor: 'bg-rose-600', count: '2,000+' },
+            { likes: '3,000 LIKES', name: '৩,০০০ লাইক', price: 259, days: '২৫ দিন', badge: 'গ্র্যান্ড প্যাক', badgeColor: 'bg-cyan-600', count: '3,000+' },
+            { likes: '5,000 LIKES', name: '৫,০০০ লাইক', price: 429, days: '৪২ দিন', badge: 'মাস্টার প্যাক', badgeColor: 'bg-fuchsia-600', count: '5,000+' },
+            { likes: '10,000 LIKES', name: '১০,০০০ লাইক', price: 769, days: '৮৪ দিন', badge: 'লেজেন্ড প্যাক', badgeColor: 'bg-red-600', count: '10,000+' }
+        ];
+
+        let selectedPkg = allPackages[0];
+        let selectedPaymentType = 'direct';
+
+        function toggleSidebarMenu() {
+            const drawer = document.getElementById('sidebarDrawer');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (drawer.classList.contains('translate-x-full')) {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function scrollToOrders() {
+            backToHome();
+            document.getElementById('ordersSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openGoogleModal() { document.getElementById('googleSignInModal').classList.remove('hidden'); }
+        function closeGoogleModal() { document.getElementById('googleSignInModal').classList.add('hidden'); }
+
+        function handleAuthAction() {
+            const googleUser = JSON.parse(localStorage.getItem('ty_google_user'));
+            if (googleUser) {
+                if (confirm('আপনি কি লগআউট করতে চান?')) {
+                    window.logoutFirebase();
+                }
+            } else {
+                toggleSidebarMenu();
+                openGoogleModal();
+            }
+        }
+
+        window.updateAuthUI = function() {
+            const googleUser = JSON.parse(localStorage.getItem('ty_google_user'));
+            const userNameEl = document.getElementById('sidebarUserName');
+            const userPhotoEl = document.getElementById('sidebarUserPhoto');
+            const authTextEl = document.getElementById('sidebarAuthText');
+
+            if (googleUser) {
+                userNameEl.innerText = googleUser.name;
+                userPhotoEl.src = googleUser.photo;
+                authTextEl.innerText = 'Log Out';
+            } else {
+                userNameEl.innerText = 'Guest User';
+                userPhotoEl.src = 'https://lh3.googleusercontent.com/a/default-user=s96-c';
+                authTextEl.innerText = 'Sign In with Google';
+            }
+        };
+
+        function renderPackageCards() {
+            const container = document.getElementById('packagesList');
+            container.innerHTML = allPackages.map(pkg => `
+                <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-md relative overflow-hidden">
+                    <span class="absolute top-0 right-0 ${pkg.badgeColor} text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl shadow-sm">${pkg.badge}</span>
+                    <h3 class="text-base font-black text-slate-900 tracking-tight">${pkg.likes}</h3>
+                    <div class="flex items-baseline gap-1 mt-1">
+                        <span class="text-2xl font-black text-slate-900">৳${pkg.price}</span>
+                        <span class="text-xs font-semibold text-slate-400">/ ${pkg.days} যাবে (প্রতিদিন ১২০)</span>
+                    </div>
+                    <div class="my-3 border-t border-slate-100"></div>
+                    <ul class="space-y-1.5 text-xs text-slate-600 font-medium">
+                        <li class="flex items-center gap-2"><span class="text-orange-500">⚡</span> ${pkg.count} likes delivery</li>
+                        <li class="flex items-center gap-2"><span class="text-amber-500">🛡️</span> 100% Safe for your ID</li>
+                        <li class="flex items-center gap-2"><span class="text-orange-600">🔒</span> No password needed</li>
+                        <li class="flex items-center gap-2"><span class="text-slate-700">👤</span> Only UID required</li>
+                    </ul>
+                    <button onclick="goToCheckout('${pkg.name}')" class="mt-4 w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-orange-500/25 active:scale-95 transition">
+                        <span>Select package</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function goToCheckout(pkgName) {
+            const googleUser = JSON.parse(localStorage.getItem('ty_google_user'));
+            if (!googleUser) {
+                openGoogleModal();
+                return;
+            }
+            selectedPkg = allPackages.find(p => p.name === pkgName) || allPackages[0];
+            document.getElementById('chkPkgName').innerText = selectedPkg.likes;
+            document.getElementById('chkPkgDelivery').innerText = selectedPkg.days === '১ দিন' ? 'Instant Delivery' : `${selectedPkg.days} Delivery`;
+            document.getElementById('chkPkgPrice').innerText = selectedPkg.price;
+
+            document.getElementById('viewHome').classList.add('hidden');
+            document.getElementById('viewCheckout').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function backToHome() {
+            document.getElementById('viewCheckout').classList.add('hidden');
+            document.getElementById('viewHome').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectPaymentMethod(type) {
+            selectedPaymentType = type;
+            if (type === 'direct') {
+                document.getElementById('payOptDirect').classList.add('payment-selected');
+                document.getElementById('payOptWallet').classList.remove('payment-selected');
+            } else {
+                document.getElementById('payOptWallet').classList.add('payment-selected');
+                document.getElementById('payOptDirect').classList.remove('payment-selected');
+            }
+        }
+
+        function handleCheckoutBuy() {
+            const uid = document.getElementById('checkoutUid').value.trim();
+            if (!uid || uid.length < 5) return alert('সঠিক Free Fire UID দিন!');
+            const wallet = Number(localStorage.getItem('ff_balance')) || 0;
+
+            if (selectedPaymentType === 'wallet') {
+                if (wallet >= selectedPkg.price) {
+                    if (confirm(`ওয়ালেট ব্যালেন্স থেকে ৳${selectedPkg.price} কেটে অর্ডার করবেন?`)) {
+                        localStorage.setItem('ff_balance', wallet - selectedPkg.price);
+                        saveOrder(uid, selectedPkg.name, selectedPkg.price, selectedPkg.days, 'সফল (লাইক যাচ্ছে)', 'wallet');
+                        alert('অর্ডার সফল হয়েছে!');
+                        backToHome();
+                    }
+                } else {
+                    alert('আপনার ওয়ালেটে ব্যালেন্স নেই! Payment Now অপশন বেছে নিয়ে বিকাশে পেমেন্ট করুন।');
+                    selectPaymentMethod('direct');
+                }
+            } else {
+                document.getElementById('modalUidDisplay').innerText = uid;
+                document.getElementById('modalPkg').innerText = selectedPkg.name;
+                document.getElementById('modalPrice').innerText = `৳${selectedPkg.price} টাকা`;
+                document.getElementById('errorMsg').classList.add('hidden');
+                document.getElementById('directPayModal').classList.remove('hidden');
+            }
+        }
+
+        function closeDirectModal() { document.getElementById('directPayModal').classList.add('hidden'); }
+
+        function submitDirectPayment() {
+            const uid = document.getElementById('checkoutUid').value.trim();
+            const sender = document.getElementById('directSender').value.trim();
+            const trxId = document.getElementById('directTrx').value.trim().toUpperCase();
+            const errBox = document.getElementById('errorMsg');
+
+            if (!/^01[3-9]\d{8}$/.test(sender)) {
+                errBox.innerText = '❌ সঠিক ১১ ডিজিটের বিকাশ নম্বর দিন!';
+                errBox.classList.remove('hidden');
+                return;
+            }
+            if (!/^[A-Z0-9]{8,11}$/.test(trxId)) {
+                errBox.innerText = '❌ ভুল বিকাশ TrxID! সঠিক ৮-১১ ডিজিটের TrxID দিন।';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            let orders = JSON.parse(localStorage.getItem('ff_orders')) || [];
+            if (orders.some(o => o.trxId === trxId)) {
+                errBox.innerText = '❌ এই TrxID দিয়ে আগে থেকেই অর্ডার করা আছে!';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            const googleUser = JSON.parse(localStorage.getItem('ty_google_user'));
+            saveOrder(uid, selectedPkg.name, selectedPkg.price, selectedPkg.days, 'পেন্ডিং অর্ডার', 'direct', sender, trxId);
+            alert('আপনার অর্ডার সাবমিট হয়েছে! এডমিন বিকাশ পেমেন্ট চেক করলেই লাইক পাবেন।');
+            closeDirectModal();
+            backToHome();
+        }
+
+        function saveOrder(uid, pkg, price, days, status, type, sender='', trxId='') {
+            const googleUser = JSON.parse(localStorage.getItem('ty_google_user'));
+            let orders = JSON.parse(localStorage.getItem('ff_orders')) || [];
+            orders.unshift({
+                id: Date.now(),
+                uid,
+                pkg,
+                price,
+                days,
+                status,
+                type,
+                sender,
+                trxId,
+                userEmail: googleUser ? googleUser.email : 'guest',
+                date: new Date().toLocaleTimeString('bn-BD')
+            });
+            localStorage.setItem('ff_orders', JSON.stringify(orders));
+            renderMyOrders();
+        }
+
+        function renderMyOrders() {
+            const list = document.getElementById('userOrdersList');
+            const orders = JSON.parse(localStorage.getItem('ff_orders')) || [];
+            if(orders.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">এখনো কোনো অর্ডার নেই</p>`;
+                return;
+            }
+            list.innerHTML = orders.map(o => {
+                let badgeStyle = 'bg-amber-100 text-amber-800 border border-amber-300';
+                if (o.status.includes('বাতিল')) badgeStyle = 'bg-red-100 text-red-700 border border-red-300';
+                else if (o.status.includes('সফল')) badgeStyle = 'bg-emerald-100 text-emerald-800 border border-emerald-300';
+
+                return `
+                <div class="bg-white border border-slate-200/80 p-3.5 rounded-2xl flex justify-between items-center text-xs shadow-sm">
+                    <div>
+                        <p class="font-black text-slate-800">UID: ${o.uid}</p>
+                        <p class="text-slate-500 text-[11px] mt-0.5">${o.pkg} (${o.days}) • ৳${o.price}</p>
+                        ${o.trxId ? `<p class="text-[10px] text-slate-400 font-mono mt-0.5">TrxID: ${o.trxId}</p>` : ''}
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${badgeStyle}">${o.status}</span>
+                </div>
+            `}).join('');
+        }
+
+        function updateWalletDisplay() {
+            const bal = localStorage.getItem('ff_balance') || '0';
+            document.querySelectorAll('.walletVal').forEach(el => el.innerText = bal);
+        }
+
+        function openAddMoneyModal() { 
+            alert('বিকাশ পার্সোনাল Send Money নম্বর: 01991561668\nটাকা পাঠানোর পর এডমিনকে TrxID দিন।'); 
+        }
+
+        renderPackageCards();
+        renderMyOrders();
+        window.updateAuthUI();
+        updateWalletDisplay();
+        setInterval(() => { renderMyOrders(); updateWalletDisplay(); }, 2000);
+    </script>
+</body>
+</html>
